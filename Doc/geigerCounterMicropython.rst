@@ -76,4 +76,3 @@ The core is the interrupt handler awaken by the discharges of the tube:
         ic = t2.channel(4, pyb.Timer.IC, pin=pyb.Pin.board.Y10, polarity=pyb.Timer.FALLING)
         ic.callback(ic_cb)
 
-The complete code for the pyboard can be downloaded here: TBD
