@@ -54,10 +54,13 @@ Micropython card pins used:
 Software Design
 ---------------
 
-Buzzer is activated with programming PWM signal at 3.5Khz. AM2302 is one
-wire, Pin has to be changed from output to input. fram has an SPI
-interface. It is harcoded in python as individual pins. The core is the
-interrupt handler awaken by the discharges of the tube:
+Buzzer is activated with programming PWM signal at 3.5Khz. 
+
+AM2302 is one wire, Pin has to be changed from output to input. 
+
+fram has an SPI interface. It is harcoded in python as individual pins. 
+
+The core is the interrupt handler awaken by the discharges of the tube:
 
     import pyb
     import micropython
