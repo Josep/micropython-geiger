@@ -119,21 +119,16 @@ def main(argv):
         print(" -aw    Turn off wixel")
         print(" -er    Turn on relay")
         print(" -ar    Turn off relay")
-        print(" -el    Turn on LED")
-        print(" -al    Turn off LED")
         print(" -ep    Turn on led blinking")
         print(" -ap    Turn off led blinking")
         print(" -eb    Turn on buzzer")
         print(" -ab    Turn off buzzer")
         print(" -eg    Turn on geiger mode")
-        print(" -ag    Turn off geiger mode")
         print(" -et    Turn on geiger transmission mode")
-        print(" -at    Turn off geiger transmission mode")
         print(" -hr    Soft reset")
         print(" -ps    Set periodic stop wixel")
         print(" -qs    Unset periodic stop wixel")
         print(" -ph    Set humidity mode")
-        print(" -qh    Unset humidity mode")
         print(" -wait  Wait for wixel communication")
     if argv[0] == '-t':
         setupDateTime()
@@ -152,7 +147,13 @@ def main(argv):
     if argv[0] == '-eg':    # enciende geiger mode
         send('l.geigerMode()')
     if argv[0] == '-et':    # enciende geiger transmission mode
+        exit = True
+        rt.join()
         send('l.geigerTransmissionMode()')
+        while(True):
+            c = self.port.read()
+            print('*',end='')
+            sys.flush.stdout()
     if argv[0] == '-hr':    # haz reset
         send('\x03') #^C
         send('\x04') #^D

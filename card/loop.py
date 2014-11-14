@@ -2,6 +2,7 @@ import pyb
 import geiger
 import tapunte
 import fram_t
+import sys
 
 class loop():
     def __init__(self, geigerPower, am2302, fram, frt, ch2, uart, apwix):
@@ -13,7 +14,7 @@ class loop():
         self.uart = uart
         self.apwix = apwix
 
-    def humidityMode(self, False):
+    def humidityMode(self):
         self.geigerPower.high()
         while(True):
             pyb.delay(20000)
@@ -22,21 +23,19 @@ class loop():
     def geigerTransmissionMode(self):
         self.geigerPower.low()
         geiger.start()
-        self.geiger.count1m = 0
+        geiger.count1m = 0
         while True:
-            if self.geiger.count1m != 0:
-                self.geiger.count1m = 0
-                self.uart.write(b'\xff')
-            else:
-                pyb.delay(50)
+            if geiger.count1m != 0:
+                geiger.count1m = 0
+                print('*')
 
     def geigerMode(self):
         self.geigerPower.low()
         geiger.start()
-        self.geiger.count1m = 0
+        geiger.count1m = 0
         while True:
-            if self.geiger.count1m != 0:
-                self.geiger.count1m = 0
+            if geiger.count1m != 0:
+                geiger.count1m = 0
                 #suena buzzer
                 self.ch2.pulse_width(12000)
                 pyb.delay(80) #in msecs
