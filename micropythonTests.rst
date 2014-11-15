@@ -8,7 +8,6 @@ Lessons learned
 * We do not have threads but we have timers and interrupts. Hardware has 17 timers.
 * I had problems with struct pack/unpack so I made the functions myself for 8 bytes datatype
 * It is difficult to avoid a main loop in my programs => when I have a main loop I do not have the REPL.
-* Fortunately, ^C works everywere to interrut the main loop even from the UART.
 * The Pin handling in python is really easy, good work!
 
 ==========
