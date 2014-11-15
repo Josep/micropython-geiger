@@ -23,8 +23,8 @@ pyb.delay(100) #in msecs
 ch2.pulse_width(0)
 
 #uart6 a wixel, pins Y1 y Y2
-uart = UART(6,115200)
-uart.init(115200,bits=8,stop=1,parity=None)
+uart = UART(6,9600)
+uart.init(9600,bits=8,stop=1,parity=None)
 pyb.repl_uart(uart)
 
 #initalize fram

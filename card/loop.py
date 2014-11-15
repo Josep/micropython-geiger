@@ -3,6 +3,7 @@ import geiger
 import tapunte
 import fram_t
 import sys
+from pyb import UART
 
 class loop():
     def __init__(self, geigerPower, am2302, fram, frt, ch2, uart, apwix):
@@ -20,7 +21,7 @@ class loop():
             pyb.delay(20000)
             print('%08X'%(self.am2302.getTempHum()))
 
-    def geigerTransmissionMode(self):
+    def geigerTransmissionModeGuay(self):
         self.geigerPower.low()
         geiger.start()
         geiger.count1m = 0
@@ -28,6 +29,20 @@ class loop():
             if geiger.count1m != 0:
                 geiger.count1m = 0
                 print('*')
+
+    def geigerTransmissionMode(self):
+        pyb.repl_uart(None)
+        #self.uart.deinit()
+        #self.uart = UART(6,9600)
+        #self.uart.init(9600,bits=8,stop=1,parity=None)
+        self.geigerPower.low()
+        geiger.start()
+        geiger.count1m = 0
+        while True:
+            if geiger.count1m != 0:
+                geiger.count1m = 0
+                self.uart.send('*')
+                self.uart.send('\n')
 
     def geigerMode(self):
         self.geigerPower.low()

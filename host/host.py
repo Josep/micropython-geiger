@@ -5,8 +5,8 @@ import time
 from datetime import datetime
 import copy
 
-portName = '/dev/cu.usbmodemfd122'
-#portName = '/dev/cu.usbmodemfa131'
+#portName = '/dev/cu.usbmodemfd122'
+portName = '/dev/cu.usbmodemfa131'
 
 exit = False
 cmdrec = []
@@ -59,13 +59,19 @@ class read_th(threading.Thread):
 
     def run(self):
         while not exit:
-            c = self.port.read()
+            c = self.port.read(1)
             print(c.decode(), end='')
             self.bufferize(c)
 
 
-def send(cad):
-    port.write((cad+'\r').encode())
+def send(cad,r=True):
+    cad2 = cad
+    if r:
+        cad2 = cad2+'\r'
+    for i in cad2:
+        j = i.encode()
+        port.write(j)
+        time.sleep(0.01)
 
 def setupDateTime():
     t = datetime.now()
@@ -119,8 +125,6 @@ def main(argv):
         print(" -aw    Turn off wixel")
         print(" -er    Turn on relay")
         print(" -ar    Turn off relay")
-        print(" -ep    Turn on led blinking")
-        print(" -ap    Turn off led blinking")
         print(" -eb    Turn on buzzer")
         print(" -ab    Turn off buzzer")
         print(" -eg    Turn on geiger mode")
@@ -147,16 +151,12 @@ def main(argv):
     if argv[0] == '-eg':    # enciende geiger mode
         send('l.geigerMode()')
     if argv[0] == '-et':    # enciende geiger transmission mode
-        exit = True
-        rt.join()
         send('l.geigerTransmissionMode()')
         while(True):
-            c = self.port.read()
-            print('*',end='')
-            sys.flush.stdout()
+            time.sleep(0.2)
     if argv[0] == '-hr':    # haz reset
-        send('\x03') #^C
-        send('\x04') #^D
+        send('\x03', False) #^C
+        send('\x04', False) #^D
     if argv[0] == '-ps': # pon stopWixel periodico
         send('apwix.statusApagadoPeriodicoWixel = True')
     if argv[0] == '-qs': # quita stopWixel periodico, TBR (To be Removed)
@@ -178,7 +178,10 @@ def main(argv):
         send('cms.resetIndApunte()')
 
 def showStandard():
+    send('')
+    time.sleep(0.2)
     send('cms.getDateTime()')
+    time.sleep(1)
     #getIndApunte
     indApunte = getIndApunte()
     print('indApunte =',indApunte)
@@ -188,8 +191,9 @@ def showStandard():
         print(getApunte(indApunte-1))
     time.sleep(0.25)
 
+
 if __name__ == "__main__":
-    port = serial.Serial(portName, 115200, timeout=0.2)
+    port = serial.Serial(portName, 9600, timeout=0.2)
     port.flushInput()
     rt = read_th(port)
     rt.start()
