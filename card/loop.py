@@ -6,23 +6,25 @@ import sys
 from pyb import UART
 
 class loop():
-    def __init__(self, geigerPower, am2302, fram, frt, ch2, uart, apwix):
+    def __init__(self, geigerPower, am2302, fram, frt, ch2, uart, wix):
         self.geigerPower = geigerPower
         self.am2302 = am2302
         self.fram = fram
         self.frt = frt
         self.ch2 = ch2
         self.uart = uart
-        self.apwix = apwix
+        self.wix = wix
 
     def humidityMode(self):
         self.geigerPower.high()
+        self.wix.high()
         while(True):
             pyb.delay(20000)
             print('%08X'%(self.am2302.getTempHum()))
 
     def geigerTransmissionMode(self):
         self.geigerPower.low()
+        self.wix.high()
         geiger.start()
         geiger.count1m = 0
         while True:
@@ -32,6 +34,7 @@ class loop():
 
     def geigerMode(self):
         self.geigerPower.low()
+        self.wix.high()
         geiger.start()
         geiger.count1m = 0
         while True:
@@ -46,6 +49,7 @@ class loop():
 
     def loop(self):
         self.geigerPower.low()
+        self.wix.high()
         geiger.start()
         rtc = pyb.RTC()
         ap1m = tapunte.tapunte()
@@ -63,7 +67,6 @@ class loop():
             datetime = rtc.datetime()
             if datetime[5] == lm:
                 pyb.delay(50)
-                self.apwix.apw()
             else:
                 lm = datetime[5]
                 t15 = t15 + 1

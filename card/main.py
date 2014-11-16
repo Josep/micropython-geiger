@@ -37,11 +37,8 @@ rtc = pyb.RTC()
 #initialize am2302
 a = am2302.am2302(ch2, frt)
 
-#initialize apagado periodico wixel
-apwix = apw.apw(wixel,uart)
-
 #initialize loop
-l = loop.loop(geigerPower, a, fr, frt, ch2, uart, apwix)
+l = loop.loop(geigerPower, a, fr, frt, ch2, uart, wixel)
 
 #initialize commands
 cms = commands.commands(rtc, fr, frt)

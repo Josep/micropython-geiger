@@ -71,7 +71,7 @@ def send(cad,r=True):
     for i in cad2:
         j = i.encode()
         port.write(j)
-        time.sleep(0.01)
+        time.sleep(0.015)
 
 def setupDateTime():
     t = datetime.now()
@@ -130,10 +130,7 @@ def main(argv):
         print(" -eg    Turn on geiger mode")
         print(" -et    Turn on geiger transmission mode")
         print(" -hr    Soft reset")
-        print(" -ps    Set periodic stop wixel")
-        print(" -qs    Unset periodic stop wixel")
         print(" -ph    Set humidity mode")
-        print(" -wait  Wait for wixel communication")
     if argv[0] == '-t':
         setupDateTime()
     if argv[0] == '-ew':    # enciende wixel
@@ -157,10 +154,6 @@ def main(argv):
     if argv[0] == '-hr':    # haz reset
         send('\x03', False) #^C
         send('\x04', False) #^D
-    if argv[0] == '-ps': # pon stopWixel periodico
-        send('apwix.statusApagadoPeriodicoWixel = True')
-    if argv[0] == '-qs': # quita stopWixel periodico, TBR (To be Removed)
-        send('apwix.statusApagadoPeriodicoWixel = False')
     if argv[0] == '-ph': # pon humidity
         send('l.humidityMode()')
     if argv[0] == '-l': # enter the loop 
