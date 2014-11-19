@@ -184,9 +184,16 @@ def showStandard():
         print(getApunte(indApunte-1))
     time.sleep(0.25)
 
+def enter_raw_repl():
+    port.write(b'\r\x03\x03') # ctrl-C twice: interrupt any running program
+    time.sleep(0.2)
+    port.write(b'\r\x01') # ctrl-A: enter raw REPL
+    time.sleep(0.2)
+    port.write(b'\x04') # ctrl-D: soft reset
+    time.sleep(0.2)
 
 if __name__ == "__main__":
-    port = serial.Serial(portName, 9600, timeout=0.2)
+    port = serial.Serial(portName, 9600, interCharTimeout=1, timeout=0.2)
     port.flushInput()
     rt = read_th(port)
     rt.start()
