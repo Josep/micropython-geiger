@@ -65,3 +65,7 @@ x3 generates PWM of 14Khz, x4 is input capture of this signal. x5 is high on int
         ic.callback(ic_cb)
 
 results: from falling edge on x3 to high level on x5: 12us => 12-7=5us from hw to sw
+
+.. image:: micropythonTests.png
+
+
